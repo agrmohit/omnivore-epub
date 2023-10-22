@@ -15,8 +15,8 @@ const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
 async function getUnreadArticles() {
   const query = gql`
     {
-      articles(first: 100) {
-        ... on ArticlesSuccess {
+      search(first: 100) {
+        ... on SearchSuccess {
           edges {
             cursor
             node {
@@ -59,11 +59,11 @@ async function getUnreadArticles() {
     };
   };
 
-  const data = await graphQLClient.request<{ articles: { edges: Edge[] } }>(
+  const data = await graphQLClient.request<{ search: { edges: Edge[] } }>(
     query,
   );
 
-  return data.articles.edges.map((e) => {
+  return data.search.edges.map((e) => {
     if (e.node.labels) {
       e.node.labelsArray = e.node.labels.map((label) => label.name);
     }
