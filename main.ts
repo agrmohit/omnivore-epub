@@ -3,6 +3,15 @@ import sanitizeHtml from "npm:sanitize-html";
 import epub, { Chapter } from "npm:epub-gen-memory";
 import config from "./config.json" with { type: "json" };
 
+if (!config.token) {
+  console.log("❌ Omnivore API token not set");
+  console.log(
+    "❌ Get a token following instructions on: https://docs.omnivore.app/integrations/api.html#getting-an-api-token",
+  );
+  console.log("❌ When you have a token, insert it as value for 'token' field in 'config.json' file");
+  Deno.exit(1);
+}
+
 const OMNIVORE_API_KEY = config.token;
 const OMNIVORE_ENDPOINT = config.endpoint;
 
