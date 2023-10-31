@@ -1,0 +1,15 @@
+{
+  "token": "",
+  "endpoint": "https://api-prod.omnivore.app/api/graphql",
+  "title": "Omnivore Articles",
+  "author": "Omnivore",
+  "cover": "https://cdn.discordapp.com/attachments/779248028824764426/1149996974234423346/cover.jpg",
+  "description": "Articles from Omnivore",
+  "addLabelsInContent": true,
+  "addArticleLinkInContent": true,
+  "allowImages": true,
+  "outputFileName": "output.epub",
+  "maxArticleCount": 100,
+  "ignoredLabels": ["pdf"],
+  "ignoredLinks": ["https://www.youtu", "https://youtu"]
+}

@@ -1,10 +1,10 @@
-// get a list of articles based on search endpoint
 import { gql, GraphQLClient } from "npm:graphql-request";
 import sanitizeHtml from "npm:sanitize-html";
 import epub, { Chapter } from "npm:epub-gen-memory";
+import config from "./config.json" with { type: "json" };
 
-const OMNIVORE_API_KEY = "";
-const OMNIVORE_ENDPOINT = "https://api-prod.omnivore.app/api/graphql";
+const OMNIVORE_API_KEY = config.token;
+const OMNIVORE_ENDPOINT = config.endpoint;
 
 const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
   headers: {
@@ -15,7 +15,7 @@ const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
 async function getUnreadArticles() {
   const query = gql`
     {
-      search(first: 100) {
+      search(first: ${config.maxArticleCount}) {
         ... on SearchSuccess {
           edges {
             cursor
@@ -73,7 +73,7 @@ async function getUnreadArticles() {
 
 async function getArticle(slug: string) {
   const query = gql`{
-    article (username: "K.Y.", slug: "${slug}") {
+    article (username: "anonymous", slug: "${slug}") {
       ... on ArticleSuccess {
         article {
           id, slug, url, content
@@ -93,8 +93,15 @@ async function getArticle(slug: string) {
     };
   }>(query);
 
+  let allowedTags;
+  if (config.allowImages) {
+    allowedTags = sanitizeHtml.defaults.allowedTags.concat(["img"]);
+  } else {
+    allowedTags = sanitizeHtml.defaults.allowedTags.concat();
+  }
+
   const sanitizedArticle = sanitizeHtml(data.article.article.content, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+    allowedTags: allowedTags,
   });
 
   return {
@@ -102,8 +109,6 @@ async function getArticle(slug: string) {
     content: sanitizedArticle,
   };
 }
-
-// mark sended
 
 async function makeMagazine() {
   console.log("〰️ getting article list");
@@ -119,15 +124,19 @@ async function makeMagazine() {
 
       if (article.labelsArray) {
         if (
-          article.url.includes("https://www.youtu") || article.url.includes("https://youtu") ||
-          article.labelsArray.find((label) => label == "pdf")
+          config.ignoredLinks.some((link) => article.url.includes(link)) ||
+          article.labelsArray.find((label) => config.ignoredLabels.includes(label))
         ) {
-          console.log("⚠️ article skipped because its either a YouTube video or a pdf");
+          console.log("⚠️ article skipped");
           continue;
         }
-        content = `<b>Labels: ${article.labelsArray.join(", ")}</b>` + content;
+        if (config.addLabelsInContent) {
+          content = `<b>Labels: ${article.labelsArray.join(", ")}</b>` + content;
+        }
       }
-      content = `<a href="${article.url}">Link to Article</a><br><br>` + content;
+      if (config.addArticleLinkInContent) {
+        content = `<a href="${article.url}">Link to Article</a><br><br>` + content;
+      }
 
       chapters.push({
         title: article.title,
@@ -140,20 +149,18 @@ async function makeMagazine() {
     }
   }
 
-  // make a PDF and save it
-
   const fileBuffer = await epub.default(
     {
-      title: "Omnivore Articles",
-      author: "Omnivore",
-      cover: "https://cdn.discordapp.com/attachments/779248028824764426/1149996974234423346/cover.jpg",
-      description: "Articles from Omnivore",
+      title: config.title,
+      author: config.author,
+      cover: config.cover,
+      description: config.description,
       ignoreFailedDownloads: true,
     },
     chapters,
   );
 
-  await Deno.writeFile("./output.epub", fileBuffer);
+  await Deno.writeFile(config.outputFileName, fileBuffer);
 
   console.log("📚 Successfully created ebook");
 }
