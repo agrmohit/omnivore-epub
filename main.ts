@@ -3,6 +3,11 @@ import sanitizeHtml from "npm:sanitize-html";
 import epub, { Chapter } from "npm:epub-gen-memory";
 import config from "./config.json" with { type: "json" };
 
+const currentVersion = "v0.2.0";
+
+console.log(`ℹ  Omnivore EPUB ${currentVersion}`);
+console.log("ℹ️ Homepage: https://github.com/agrmohit/omnivore-epub");
+
 if (!config.token) {
   console.log("❌ Omnivore API token not set");
   console.log(
@@ -20,6 +25,16 @@ const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
     authorization: OMNIVORE_API_KEY,
   },
 });
+
+async function checkForUpdates() {
+  const response = await fetch("https://api.github.com/repos/agrmohit/omnivore-epub/tags");
+  const tags = await response.json();
+
+  if (tags[0].name !== currentVersion) {
+    console.log("ℹ  New update available");
+    console.log(`ℹ  ${currentVersion} --> ${tags[0].name}`);
+  }
+}
 
 async function getUnreadArticles() {
   const query = gql`
@@ -174,5 +189,6 @@ async function makeMagazine() {
   console.log("📚 Successfully created ebook");
 }
 
+await checkForUpdates();
 await makeMagazine();
 Deno.exit();
