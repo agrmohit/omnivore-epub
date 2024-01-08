@@ -39,7 +39,7 @@ async function checkForUpdates() {
 async function getUnreadArticles() {
   const query = gql`
     {
-      search(first: ${config.maxArticleCount}) {
+      search(query: "${config.searchQuery}", first: ${config.maxArticleCount}) {
         ... on SearchSuccess {
           edges {
             cursor
