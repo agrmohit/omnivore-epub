@@ -9,7 +9,8 @@
   "addArticleLinkInContent": true,
   "allowImages": true,
   "outputFileName": "output.epub",
-  "maxArticleCount": 100,
+  "maxArticleCount": 15,
+  "searchQuery": "sort:saved-asc",
   "ignoredLabels": ["pdf"],
   "ignoredLinks": ["https://www.youtu", "https://youtu"]
 }
