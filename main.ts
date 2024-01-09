@@ -3,7 +3,7 @@ import sanitizeHtml from "npm:sanitize-html";
 import epub, { Chapter } from "npm:epub-gen-memory";
 import config from "./config.json" with { type: "json" };
 
-const currentVersion = "v0.2.0";
+const currentVersion = "v0.3.0";
 
 console.log(`ℹ  Omnivore EPUB ${currentVersion}`);
 console.log("ℹ️ Homepage: https://github.com/agrmohit/omnivore-epub");
@@ -33,6 +33,7 @@ async function checkForUpdates() {
   if (tags[0].name !== currentVersion) {
     console.log("ℹ  New update available");
     console.log(`ℹ  ${currentVersion} --> ${tags[0].name}`);
+    console.log(`ℹ  View release notes: https://github.com/agrmohit/omnivore-epub/releases`);
   }
 }
 
