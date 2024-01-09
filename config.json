@@ -10,7 +10,7 @@
   "allowImages": true,
   "outputFileName": "output.epub",
   "maxArticleCount": 15,
-  "searchQuery": "sort:saved-asc",
+  "searchQuery": "sort:saved-desc",
   "ignoredLabels": ["pdf"],
   "ignoredLinks": ["https://www.youtu", "https://youtu"]
 }
