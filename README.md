@@ -30,6 +30,6 @@ Configuration options available in the [config file](config.json)
 | allowImages             | boolean  | Whether to add images linked in article in the ebook  |
 | outputFileName          | string   | Ebook file name                                       |
 | maxArticleCount         | number   | Number of articles to fetch                           |
-  searchQuery             | string   | Valid query for article search, def: "sort:saved-asc" |
+| searchQuery             | string   | Valid query for article search, default: "sort:saved-desc". Change it to "sort:saved-asc" for fetching oldest articles first |
 | ignoredLabels           | string[] | List of labels to exclude from the ebook              |
 | ignoredLinks            | string[] | List of urls to exclude from the ebook                |
