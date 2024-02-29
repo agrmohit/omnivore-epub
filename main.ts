@@ -2,8 +2,9 @@ import { gql, GraphQLClient } from "npm:graphql-request";
 import sanitizeHtml from "npm:sanitize-html";
 import epub, { Chapter } from "npm:epub-gen-memory";
 import config from "./config.json" with { type: "json" };
+import { sendEmail } from "./email.ts";
 
-const currentVersion = "v0.3.0";
+const currentVersion = "v0.4.0";
 
 console.log(`ℹ  Omnivore EPUB ${currentVersion}`);
 console.log("ℹ️ Homepage: https://github.com/agrmohit/omnivore-epub");
@@ -192,4 +193,9 @@ async function makeMagazine() {
 
 await checkForUpdates();
 await makeMagazine();
+
+if (config.emailSupport) {
+  await sendEmail();
+}
+
 Deno.exit();
