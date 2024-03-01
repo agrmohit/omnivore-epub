@@ -37,11 +37,18 @@ async function checkForUpdates() {
     Deno.exit(1);
   }
   const tags = await response.json();
+  const latestTag = tags[0].name;
 
-  if (tags[0].name !== currentVersion) {
+  if (latestTag !== currentVersion) {
     console.log("ℹ  New update available");
-    console.log(`ℹ  ${currentVersion} --> ${tags[0].name}`);
-    console.log(`ℹ  View release notes: https://github.com/agrmohit/omnivore-epub/releases`);
+    console.log(`ℹ  ${currentVersion} --> ${latestTag}`);
+    console.log("ℹ  Release Notes:");
+
+    const response = await fetch(`https://api.github.com/repos/agrmohit/omnivore-epub/releases/tags/${latestTag}`);
+    const releasenotes = await response.json();
+
+    console.log(releasenotes.body);
+    console.log(`\n🌐 View on Web: https://github.com/agrmohit/omnivore-epub/releases/tag/${latestTag}`);
   }
 }
 
@@ -143,8 +150,8 @@ async function getArticle(slug: string) {
   };
 }
 
-async function makeMagazine() {
-  console.log("〰️ getting article list");
+async function makeEbook() {
+  console.log("〰️Fetching article list");
   const articles = await getUnreadArticles();
   console.log("🤖 done");
 
@@ -152,7 +159,7 @@ async function makeMagazine() {
 
   for (const article of articles) {
     if (!article.isArchived) {
-      console.log(`🌐 fetching ${article.title}`);
+      console.log(`🌐 Fetching ${article.title}`);
       let content = (await getArticle(article.slug)).content;
 
       if (article.labelsArray) {
@@ -160,7 +167,7 @@ async function makeMagazine() {
           config.ignoredLinks.some((link) => article.url.includes(link)) ||
           article.labelsArray.find((label) => config.ignoredLabels.includes(label))
         ) {
-          console.log("⚠️ article skipped");
+          console.log("⚠️ Article skipped");
           continue;
         }
         if (config.addLabelsInContent) {
@@ -182,6 +189,8 @@ async function makeMagazine() {
     }
   }
 
+  console.log(`📚 Creating ebook (${config.outputFileName})`);
+
   const fileBuffer = await epub.default(
     {
       title: config.title,
@@ -195,11 +204,11 @@ async function makeMagazine() {
 
   await Deno.writeFile(config.outputFileName, fileBuffer);
 
-  console.log("📚 Successfully created ebook");
+  console.log("📔 Successfully created ebook");
 }
 
 await checkForUpdates();
-await makeMagazine();
+await makeEbook();
 
 if (config.emailSupport) {
   await sendEmail();
