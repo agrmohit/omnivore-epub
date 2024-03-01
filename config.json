@@ -13,7 +13,7 @@
   "searchQuery": "sort:saved-desc",
   "ignoredLabels": ["pdf"],
   "ignoredLinks": ["https://www.youtu", "https://youtu"],
-  "emailSupport" : false,
+  "emailSupport": false,
   "emailHost": "",
   "emailPort": 465,
   "emailUser": "",
