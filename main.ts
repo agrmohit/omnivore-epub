@@ -28,7 +28,14 @@ const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
 });
 
 async function checkForUpdates() {
-  const response = await fetch("https://api.github.com/repos/agrmohit/omnivore-epub/tags");
+  let response;
+  try {
+    response = await fetch("https://api.github.com/repos/agrmohit/omnivore-epub/tags");
+  } catch (error) {
+    console.error("🚫 Error: Unable to connect. Please check your internet connection");
+    console.error(`🚫 Error: ${error}`);
+    Deno.exit(1);
+  }
   const tags = await response.json();
 
   if (tags[0].name !== currentVersion) {
