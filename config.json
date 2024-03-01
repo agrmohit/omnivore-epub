@@ -3,7 +3,7 @@
   "endpoint": "https://api-prod.omnivore.app/api/graphql",
   "title": "Omnivore Articles",
   "author": "Omnivore",
-  "cover": "https://cdn.discordapp.com/attachments/779248028824764426/1149996974234423346/cover.jpg",
+  "cover": "https://r2-public.agrmohit.com/omnivore-articles-bjd81a7x3k.jpg",
   "description": "Articles from Omnivore",
   "addLabelsInContent": true,
   "addArticleLinkInContent": true,
@@ -14,10 +14,10 @@
   "ignoredLabels": ["pdf"],
   "ignoredLinks": ["https://www.youtu", "https://youtu"],
   "emailSupport": false,
-  "emailHost": "",
-  "emailPort": 465,
-  "emailUser": "",
+  "emailHost": "smtp.gmail.com",
+  "emailPort": 587,
+  "emailUser": "user@example.com",
   "emailPassword": "",
-  "emailRecipient": "",
+  "emailRecipient": "my-send-to-kindle-email@kindle.com",
   "emailAllowSTARTTLS": true
 }
