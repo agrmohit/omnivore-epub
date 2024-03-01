@@ -13,7 +13,7 @@ export async function sendEmail() {
   });
 
   const mailOptions = {
-    from: config.emailUser,
+    from: `Omnivore EPUB Mailer <${config.emailUser}>`,
     to: config.emailRecipient,
     subject: config.title,
     attachments: [
@@ -23,14 +23,19 @@ export async function sendEmail() {
     ],
   };
 
-  if (await Deno.stat(config.outputFileName)) {
+  if (
+    await Deno.stat(config.outputFileName).catch((_err) => {
+      console.error(`🚫 ebook file '${config.outputFileName}' is missing`);
+      Deno.exit(1);
+    })
+  ) {
     try {
+      console.log(`📧 Sending email from 'Omnivore EPUB Mailer <${config.emailUser}>' to '${config.emailRecipient}'`);
       const info = await transporter.sendMail(mailOptions);
-      console.log(`📨 Message sent: ${info.messageId}`);
+      console.log(`📨 Email sent: ${info.messageId}`);
     } catch (error) {
       console.error(`🚫 Error: ${error}`);
+      Deno.exit(1);
     }
-  } else {
-    console.error("🚫 ebook file is missing");
   }
 }
