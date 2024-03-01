@@ -18,5 +18,6 @@
   "emailPort": 465,
   "emailUser": "",
   "emailPassword": "",
-  "emailRecipient": ""
+  "emailRecipient": "",
+  "emailAllowSTARTTLS": true
 }
