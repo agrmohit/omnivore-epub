@@ -81,5 +81,6 @@ Configuration options available in the [config file](config.json)
 | emailUser               | string   | Username/Email address of your email account              |
 | emailPassword           | string   | Password of your email account. Prefer app password       |
 | emailRecipient          | string   | Email address that should receive your ebook              |
+| emailFrom               | string   | Sender name that appears to the email receiver            |
 | emailAllowSTARTTLS      | boolean  | Allow connecting to the SMTP server using STARTTLS        |
 <!-- deno-fmt-ignore-end -->

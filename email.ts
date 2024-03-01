@@ -13,7 +13,7 @@ export async function sendEmail() {
   });
 
   const mailOptions = {
-    from: `Omnivore EPUB Mailer <${config.emailUser}>`,
+    from: `${config.emailFrom} <${config.emailUser}>`,
     to: config.emailRecipient,
     subject: config.title,
     attachments: [
@@ -30,7 +30,7 @@ export async function sendEmail() {
     })
   ) {
     try {
-      console.log(`📧 Sending email from 'Omnivore EPUB Mailer <${config.emailUser}>' to '${config.emailRecipient}'`);
+      console.log(`📧 Sending email from '${config.emailFrom} <${config.emailUser}>' to '${config.emailRecipient}'`);
       const info = await transporter.sendMail(mailOptions);
       console.log(`📨 Email sent: ${info.messageId}`);
     } catch (error) {

@@ -19,5 +19,6 @@
   "emailUser": "user@example.com",
   "emailPassword": "",
   "emailRecipient": "my-send-to-kindle-email@kindle.com",
+  "emailFrom": "Omnivore EPUB Mailer",
   "emailAllowSTARTTLS": true
 }
