@@ -16,6 +16,7 @@ export async function sendEmail() {
     from: `${config.emailFrom} <${config.emailUser}>`,
     to: config.emailRecipient,
     subject: config.title,
+    text: `Sent by Omnivore EPUB (https://github.com/agrmohit/omnivore-epub)`,
     attachments: [
       {
         path: config.outputFileName,
