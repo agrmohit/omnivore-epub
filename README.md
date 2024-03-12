@@ -59,30 +59,31 @@ List of eReaders that support sending ebook using email:
 Configuration options available in the [config file](config.json)
 
 <!-- deno-fmt-ignore-start -->
-| Option                   | Type     | Description                                              |
-| ------------------------ | -------- | -------------------------------------------------------- |
-| token                    | string   | Omnivore API Token                                       |
-| endpoint                 | string   | Omnivore GraphQL API endpoint                            |
-| title                    | string   | Title of the ebook                                       |
-| author                   | string   | Author of the ebook                                      |
-| cover                    | string   | URL for fetching cover image for the ebook               |
-| description              | string   | Description of the ebook                                 |
-| addLabelsInContent       | boolean  | Whether to add the labels for the article below title    |
-| addArticleLinkInContent  | boolean  | Whether to add the link for the article below title      |
-| allowImages              | boolean  | Whether to add images linked in article in the ebook     |
-| outputFileName           | string   | ebook file name                                          |
-| maxArticleCount          | number   | Number of articles to fetch                              |
+| Option                   | Type     | Description                                                      |
+| ------------------------ | -------- | ---------------------------------------------------------------- |
+| token                    | string   | Omnivore API Token                                               |
+| endpoint                 | string   | Omnivore GraphQL API endpoint                                    |
+| title                    | string   | Title of the ebook                                               |
+| author                   | string   | Author of the ebook                                              |
+| cover                    | string   | URL for fetching cover image for the ebook                       |
+| description              | string   | Description of the ebook                                         |
+| addLabelsInContent       | boolean  | Whether to add the labels for the article below title            |
+| addArticleLinkInContent  | boolean  | Whether to add the link for the article below title              |
+| allowImages              | boolean  | Whether to add images linked in article in the ebook             |
+| outputFileName           | string   | ebook file name                                                  |
+| maxArticleCount          | number   | Number of articles to fetch                                      |
 | searchQuery              | string   | Valid query for article search, default: "sort:saved-desc". Change it to "sort:saved-asc" for fetching oldest articles first |
-| ignoredLabels            | string[] | List of labels to exclude from the ebook                 |
-| ignoredLinks             | string[] | List of urls to exclude from the ebook                   |
-| emailSupport             | boolean  | Whether to send the ebook via email (to your eReader)    |
-| emailHost                | string   | SMTP Hostname of your email provider                     |
-| emailPort                | number   | Usually one of 587, 465 or 25. Prefer 587 when available |
-| emailUser                | string   | Username/Email address of your email account             |
-| emailPassword            | string   | Password of your email account. Prefer app password      |
-| emailRecipient           | string   | Email address that should receive your ebook             |
-| emailFrom                | string   | Sender name that appears to the email receiver           |
-| emailAllowSTARTTLS       | boolean  | Allow connecting to the SMTP server using STARTTLS       |
-| emailSizeWarningSuppress | boolean  | Show a warning if ebook is over emailSizeWarningMinSize  |
-| emailSizeWarningMinSize  | number   | Min ebook size to show warning while sending email in MB |
+| ignoredLabels            | string[] | List of labels to exclude from the ebook                         |
+| onlyIncludeLabels        | string[] | List of labels to include. Overrides ignoredLabels, ignoredLinks |
+| ignoredLinks             | string[] | List of urls to exclude from the ebook                           |
+| emailSupport             | boolean  | Whether to send the ebook via email (to your eReader)            |
+| emailHost                | string   | SMTP Hostname of your email provider                             |
+| emailPort                | number   | Usually one of 587, 465 or 25. Prefer 587 when available         |
+| emailUser                | string   | Username/Email address of your email account                     |
+| emailPassword            | string   | Password of your email account. Prefer app password              |
+| emailRecipient           | string   | Email address that should receive your ebook                     |
+| emailFrom                | string   | Sender name that appears to the email receiver                   |
+| emailAllowSTARTTLS       | boolean  | Allow connecting to the SMTP server using STARTTLS               |
+| emailSizeWarningSuppress | boolean  | Show a warning if ebook is over emailSizeWarningMinSize          |
+| emailSizeWarningMinSize  | number   | Min ebook size to show warning while sending email in MB         |
 <!-- deno-fmt-ignore-end -->
