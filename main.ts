@@ -4,7 +4,7 @@ import epub, { Chapter } from "npm:epub-gen-memory";
 import config from "./config.json" with { type: "json" };
 import { sendEmail } from "./email.ts";
 
-const currentVersion = "v0.4.1";
+const currentVersion = "v0.5.0";
 
 console.log(`ℹ  Omnivore EPUB ${currentVersion}`);
 console.log("ℹ️ Homepage: https://github.com/agrmohit/omnivore-epub");
@@ -163,12 +163,26 @@ async function makeEbook() {
       let content = (await getArticle(article.slug)).content;
 
       if (article.labelsArray) {
-        if (
-          config.ignoredLinks.some((link) => article.url.includes(link)) ||
-          article.labelsArray.find((label) => config.ignoredLabels.includes(label))
-        ) {
-          console.log("⚠️ Article skipped");
-          continue;
+        // Check if onlyIncludeLabels is empty
+        if (config.onlyIncludeLabels.length) {
+          // @ts-ignore label cannot be empty because we are checking it in the line above
+          if (!article.labelsArray.find((label) => config.onlyIncludeLabels.includes(label))) {
+            console.log("⚠️ Article skipped: no labels match config.onlyIncludeLabels");
+            continue;
+          }
+        } else {
+          // Proceed if onlyIncludeLabels is not set
+          if (
+            article.labelsArray.find((label) => config.ignoredLabels.includes(label))
+          ) {
+            console.log("⚠️ Article skipped: one or more labels match config.ignoredLabels");
+            continue;
+          } else if (
+            config.ignoredLinks.some((link) => article.url.includes(link))
+          ) {
+            console.log("⚠️ Article skipped: article link matches config.ignoredLinks");
+            continue;
+          }
         }
         if (config.addLabelsInContent) {
           content = `<b>Labels: ${article.labelsArray.join(", ")}</b>` + content;

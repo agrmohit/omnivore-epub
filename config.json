@@ -12,6 +12,7 @@
   "maxArticleCount": 15,
   "searchQuery": "sort:saved-desc",
   "ignoredLabels": ["pdf"],
+  "onlyIncludeLabels": [],
   "ignoredLinks": ["https://www.youtu", "https://youtu"],
   "emailSupport": false,
   "emailHost": "smtp.gmail.com",
