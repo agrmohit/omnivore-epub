@@ -1,6 +1,6 @@
 # Omnivore EPUB
 
-A program to generate epub files from your unarchived [Omnivore](https://omnivore.app) articles
+A program to generate epub files from your [Omnivore](https://omnivore.app) articles
 
 It can also optionally send the ebook to your eReader using email
 
@@ -58,7 +58,6 @@ List of eReaders that support sending ebook using email:
 
 Configuration options available in the [config file](config.json)
 
-<!-- deno-fmt-ignore-start -->
 | Option                   | Type     | Description                                              |
 | ------------------------ | -------- | -------------------------------------------------------- |
 | token                    | string   | Omnivore API Token                                       |
@@ -72,7 +71,7 @@ Configuration options available in the [config file](config.json)
 | allowImages              | boolean  | Whether to add images linked in article in the ebook     |
 | outputFileName           | string   | ebook file name                                          |
 | maxArticleCount          | number   | Number of articles to fetch                              |
-| searchQuery              | string   | Valid query for article search, default: "sort:saved-desc". Change it to "sort:saved-asc" for fetching oldest articles first |
+| searchQuery              | string   | Valid query for article search                           |
 | ignoredLabels            | string[] | List of labels to exclude from the ebook                 |
 | ignoredLinks             | string[] | List of urls to exclude from the ebook                   |
 | emailSupport             | boolean  | Whether to send the ebook via email (to your eReader)    |
@@ -85,4 +84,14 @@ Configuration options available in the [config file](config.json)
 | emailAllowSTARTTLS       | boolean  | Allow connecting to the SMTP server using STARTTLS       |
 | emailSizeWarningSuppress | boolean  | Show a warning if ebook is over emailSizeWarningMinSize  |
 | emailSizeWarningMinSize  | number   | Min ebook size to show warning while sending email in MB |
-<!-- deno-fmt-ignore-end -->
+
+### Custom searchQuery
+
+Setting `searchQuery` is the recommended way to filter and sort articles. You can learn more about how to use them on
+the official Omnivore documentation [Search | Omnivore Docs](https://docs.omnivore.app/using/search.html).
+
+The default value is `sort:saved-desc` which returns all unarchived articles sorted by saved date, recently added
+articles first.
+
+You can also use it to filter by labels. In case the label contain a space, you will need to escape the double-quotes
+using a forward slash `\`. Example: `sort:saved-desc label:\"Send to Kindle\"`
