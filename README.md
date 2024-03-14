@@ -84,6 +84,7 @@ Configuration options available in the [config file](config.json)
 | emailAllowSTARTTLS       | boolean  | Allow connecting to the SMTP server using STARTTLS       |
 | emailSizeWarningSuppress | boolean  | Show a warning if ebook is over emailSizeWarningMinSize  |
 | emailSizeWarningMinSize  | number   | Min ebook size to show warning while sending email in MB |
+| updateCheck              | boolean  | Check for updates when run                               |
 
 ### Custom searchQuery
 

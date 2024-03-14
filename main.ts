@@ -205,7 +205,13 @@ async function makeEbook() {
   console.log("📔 Successfully created ebook");
 }
 
-await checkForUpdates();
+if (config.updateCheck) {
+  await checkForUpdates();
+} else {
+  console.log("🌐 Update checks are disabled");
+  console.log("🌐 You can manually check for updates here: https://github.com/agrmohit/omnivore-epub/releases");
+}
+
 await makeEbook();
 
 if (config.emailSupport) {

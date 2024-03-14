@@ -22,5 +22,6 @@
   "emailFrom": "Omnivore EPUB Mailer",
   "emailAllowSTARTTLS": true,
   "emailSizeWarningSuppress": false,
-  "emailSizeWarningMinSize": 25
+  "emailSizeWarningMinSize": 25,
+  "updateCheck": true
 }
