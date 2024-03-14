@@ -23,5 +23,6 @@
   "emailAllowSTARTTLS": true,
   "emailSizeWarningSuppress": false,
   "emailSizeWarningMinSize": 25,
-  "updateCheck": true
+  "updateCheck": true,
+  "showReleaseNotes": true
 }

@@ -42,10 +42,12 @@ async function checkForUpdates() {
   if (latestReleaseTagName !== currentVersion && latestReleaseTagName !== undefined) {
     console.log("ℹ  New update available");
     console.log(`ℹ  ${currentVersion} --> ${latestReleaseTagName}`);
-    console.log(`ℹ  ${currentVersion} --> ${latestTag}`);
-    console.log("ℹ  Release Notes:");
-    console.log(latestRelease.body);
-    console.log("\n🌐 View on Web: https://github.com/agrmohit/omnivore-epub/releases/latest");
+
+    if (config.showReleaseNotes) {
+      console.log("ℹ  Release Notes:");
+      console.log(latestRelease.body + "\n");
+    }
+    console.log("🌐 View on Web: https://github.com/agrmohit/omnivore-epub/releases/latest");
   }
 }
 

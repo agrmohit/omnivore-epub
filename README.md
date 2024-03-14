@@ -85,6 +85,7 @@ Configuration options available in the [config file](config.json)
 | emailSizeWarningSuppress | boolean  | Show a warning if ebook is over emailSizeWarningMinSize  |
 | emailSizeWarningMinSize  | number   | Min ebook size to show warning while sending email in MB |
 | updateCheck              | boolean  | Check for updates when run                               |
+| showReleaseNotes         | boolean  | Show release notes when an update is available           |
 
 ### Custom searchQuery
 
