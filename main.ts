@@ -53,9 +53,10 @@ async function checkForUpdates() {
 }
 
 async function getUnreadArticles() {
+  const searchQuery = config.searchQuery.replaceAll('"', '\\"');
   const query = gql`
     {
-      search(query: "${config.searchQuery.replaceAll('"','\\"')}", first: ${config.maxArticleCount}) {
+      search(query: "${searchQuery}", first: ${config.maxArticleCount}) {
         ... on SearchSuccess {
           edges {
             cursor
