@@ -30,25 +30,22 @@ const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
 async function checkForUpdates() {
   let response;
   try {
-    response = await fetch("https://api.github.com/repos/agrmohit/omnivore-epub/tags");
+    response = await fetch("https://api.github.com/repos/agrmohit/omnivore-epub/releases/latest");
   } catch (error) {
     console.error("🚫 Error: Unable to connect. Please check your internet connection");
     console.error(`🚫 Error: ${error}`);
     Deno.exit(1);
   }
-  const tags = await response.json();
-  const latestTag = tags[0].name;
+  const latestRelease = await response.json();
+  const latestReleaseTagName = latestRelease.tag_name;
 
-  if (latestTag !== currentVersion) {
+  if (latestReleaseTagName !== currentVersion && latestReleaseTagName !== undefined) {
     console.log("ℹ  New update available");
+    console.log(`ℹ  ${currentVersion} --> ${latestReleaseTagName}`);
     console.log(`ℹ  ${currentVersion} --> ${latestTag}`);
     console.log("ℹ  Release Notes:");
-
-    const response = await fetch(`https://api.github.com/repos/agrmohit/omnivore-epub/releases/tags/${latestTag}`);
-    const releasenotes = await response.json();
-
-    console.log(releasenotes.body);
-    console.log(`\n🌐 View on Web: https://github.com/agrmohit/omnivore-epub/releases/tag/${latestTag}`);
+    console.log(latestRelease.body);
+    console.log("\n🌐 View on Web: https://github.com/agrmohit/omnivore-epub/releases/latest");
   }
 }
 
