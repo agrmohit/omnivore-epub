@@ -4,7 +4,7 @@ import epub, { Chapter } from "npm:epub-gen-memory";
 import config from "./config.json" with { type: "json" };
 import { sendEmail } from "./email.ts";
 
-const currentVersion = "v0.4.1";
+const currentVersion = "v0.5.0";
 
 console.log(`ℹ  Omnivore EPUB ${currentVersion}`);
 console.log("ℹ️ Homepage: https://github.com/agrmohit/omnivore-epub");
@@ -53,9 +53,10 @@ async function checkForUpdates() {
 }
 
 async function getUnreadArticles() {
+  const searchQuery = config.searchQuery.replaceAll('"', '\\"');
   const query = gql`
     {
-      search(query: "${config.searchQuery.replaceAll('"','\\"')}", first: ${config.maxArticleCount}) {
+      search(query: "${searchQuery}", first: ${config.maxArticleCount}) {
         ... on SearchSuccess {
           edges {
             cursor
