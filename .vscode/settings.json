@@ -3,5 +3,8 @@
   "deno.lint": true,
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "markdownlint.config": {
+    "MD024": false
   }
 }
