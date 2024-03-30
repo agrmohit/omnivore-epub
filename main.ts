@@ -4,7 +4,7 @@ import sanitizeHtml from "npm:sanitize-html";
 import config from "./config.json" with { type: "json" };
 import { sendEmail } from "./email.ts";
 
-const currentVersion = "v0.5.0";
+const currentVersion = "v0.6.0";
 
 console.log(`ℹ  Omnivore EPUB ${currentVersion}`);
 console.log("ℹ️ Homepage: https://github.com/agrmohit/omnivore-epub");
