@@ -1,6 +1,6 @@
-import { gql, GraphQLClient } from "npm:graphql-request";
-import sanitizeHtml from "npm:sanitize-html";
+import { Omnivore } from "npm:@omnivore-app/api";
 import epub, { Chapter } from "npm:epub-gen-memory";
+import sanitizeHtml from "npm:sanitize-html";
 import config from "./config.json" with { type: "json" };
 import { sendEmail } from "./email.ts";
 
@@ -17,15 +17,6 @@ if (!config.token) {
   console.log("❌ When you have a token, insert it as value for 'token' field in 'config.json' file");
   Deno.exit(1);
 }
-
-const OMNIVORE_API_KEY = config.token;
-const OMNIVORE_ENDPOINT = config.endpoint;
-
-const graphQLClient = new GraphQLClient(OMNIVORE_ENDPOINT, {
-  headers: {
-    authorization: OMNIVORE_API_KEY,
-  },
-});
 
 async function checkForUpdates() {
   let response;
@@ -51,88 +42,7 @@ async function checkForUpdates() {
   }
 }
 
-async function getUnreadArticles() {
-  const searchQuery = config.searchQuery.replaceAll('"', '\\"');
-  const query = gql`
-    {
-      search(query: "${searchQuery}", first: ${config.maxArticleCount}) {
-        ... on SearchSuccess {
-          edges {
-            cursor
-            node {
-              title
-              slug
-              description
-              url
-              savedAt
-              language
-              subscription
-              isArchived
-              author
-              labels {
-                name
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  type Label = {
-    name: string;
-  };
-
-  type Edge = {
-    cursor: string;
-    node: {
-      title: string;
-      slug: string;
-      url: string;
-      savedAt: string;
-      language: string;
-      subscription: string;
-      isArchived: boolean;
-      author: string;
-      labels: Label[];
-      labelsArray: string[];
-    };
-  };
-
-  const data = await graphQLClient.request<{ search: { edges: Edge[] } }>(
-    query,
-  );
-
-  return data.search.edges.map((e) => {
-    if (e.node.labels) {
-      e.node.labelsArray = e.node.labels.map((label) => label.name);
-    }
-    return e.node;
-  });
-}
-
-async function getArticle(slug: string) {
-  const query = gql`{
-    article (username: "anonymous", slug: "${slug}") {
-      ... on ArticleSuccess {
-        article {
-          id, slug, url, content
-        }
-      }
-    }
-  }`;
-
-  const data = await graphQLClient.request<{
-    article: {
-      article: {
-        id: string;
-        slug: string;
-        url: string;
-        content: string;
-      };
-    };
-  }>(query);
-
+function sanitizeContent(content: string | null) {
   let allowedTags;
   if (config.allowImages) {
     allowedTags = sanitizeHtml.defaults.allowedTags.concat(["img"]);
@@ -140,55 +50,67 @@ async function getArticle(slug: string) {
     allowedTags = sanitizeHtml.defaults.allowedTags.concat();
   }
 
-  const sanitizedArticle = sanitizeHtml(data.article.article.content, {
+  const sanitizedContent = sanitizeHtml(content, {
     allowedTags: allowedTags,
   });
 
-  return {
-    ...data.article.article,
-    content: sanitizedArticle,
-  };
+  return sanitizedContent;
 }
 
 async function makeEbook() {
-  console.log("〰️Fetching article list");
-  const articles = await getUnreadArticles();
+  const omnivore = new Omnivore({
+    apiKey: config.token,
+    baseUrl: config.endpoint,
+  });
+
+  const ignoredLabelsQuery = `-label:${config.ignoredLabels.join(",")}`;
+  console.log(`〰️Fetching upto ${config.maxArticleCount} articles`);
+
+  const articles = await omnivore.items.search({
+    first: config.maxArticleCount,
+    includeContent: true,
+    format: "html",
+    query: `${config.searchQuery} ${ignoredLabelsQuery}`,
+  });
   console.log("🤖 done");
 
   const chapters: Chapter[] = [];
 
-  for (const article of articles) {
-    if (!article.isArchived) {
-      console.log(`🌐 Fetching ${article.title}`);
-      let content = (await getArticle(article.slug)).content;
+  for (const edge of articles.edges) {
+    const article = edge.node;
+    console.log(`🌐 Processing ${article.title}`);
+    let content = sanitizeContent(article.content);
 
-      if (article.labelsArray) {
-        if (
-          config.ignoredLinks.some((link) => article.url.includes(link)) ||
-          article.labelsArray.find((label) => config.ignoredLabels.includes(label))
-        ) {
-          console.log("⚠️ Article skipped");
-          continue;
-        }
-        if (config.addLabelsInContent) {
-          content = `<b>Labels: ${article.labelsArray.join(", ")}</b>` + content;
-        }
-      }
-      if (config.addArticleLinkInContent) {
-        content = `<a href="${article.url}">Link to Article</a><br><br>` + content;
-      }
-
-      chapters.push({
-        title: article.title,
-        author: article.author ?? "Omnivore",
-        content: content,
-        filename: article.slug,
-      });
-
-      console.log(`✅ done`);
+    if (
+      config.ignoredLinks.some((link) => article.url.includes(link))
+    ) {
+      console.log("⚠️ Article skipped: Matched ignored link");
+      continue;
     }
+
+    if (article.labels?.length) {
+      if (config.addLabelsInContent) {
+        const labels = article.labels.map((label) => label.name);
+        content = `<b>Labels: ${labels.join(", ")}</b>` + content;
+      }
+    }
+
+    if (config.addArticleLinkInContent) {
+      content = `<a href="${article.url}">Link to Article</a><br><br>` + content;
+    }
+
+    chapters.push({
+      title: article.title,
+      author: article.author ?? "",
+      content: content,
+      filename: article.slug,
+    });
+
+    console.log(`✅ done`);
   }
 
+  console.log(`🤖 Processed ${articles.edges.length} articles out of ${articles.pageInfo.totalCount} in your library`);
+  console.log(`🤖 ${articles.edges.length - chapters.length} skipped`);
   console.log(`📚 Creating ebook (${config.outputFileName})`);
 
   const fileBuffer = await epub.default(
