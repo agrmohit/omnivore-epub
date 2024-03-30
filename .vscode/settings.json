@@ -6,5 +6,6 @@
   },
   "markdownlint.config": {
     "MD024": false
-  }
+  },
+  "markdownlint.ignore": [".github/**"]
 }
