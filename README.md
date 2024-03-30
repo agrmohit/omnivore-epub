@@ -4,6 +4,8 @@ A program to generate epub files from your [Omnivore](https://omnivore.app) arti
 
 It can also optionally send the ebook to your eReader using email
 
+It uses [Omnivore API Client Library for Node.js](https://github.com/omnivore-app/omnivore-api)
+
 Forked from [here](https://gist.github.com/kebot/90de9c41742cacf371368d85870c4a75)
 
 ## Usage
