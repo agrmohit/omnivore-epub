@@ -57,6 +57,14 @@ function sanitizeContent(content: string | null) {
   return sanitizedContent;
 }
 
+function sleep(milliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({});
+    }, milliseconds);
+  });
+}
+
 async function makeEbook() {
   const omnivore = new Omnivore({
     apiKey: config.token,
@@ -64,53 +72,77 @@ async function makeEbook() {
   });
 
   const ignoredLabelsQuery = `-label:${config.ignoredLabels.join(",")}`;
-  console.log(`〰️Fetching upto ${config.maxArticleCount} articles`);
 
-  const articles = await omnivore.items.search({
-    first: config.maxArticleCount,
-    includeContent: true,
-    format: "html",
-    query: `${config.searchQuery} ${ignoredLabelsQuery}`,
-  });
-  console.log("🤖 done");
-
+  let endCursor = 0;
   const chapters: Chapter[] = [];
+  const batchSize = 60;
+  let totalProcessed = 0;
+  let totalSkipped = 0;
+  let libraryTotal = 0;
 
-  for (const edge of articles.edges) {
-    const article = edge.node;
-    console.log(`🌐 Processing ${article.title}`);
-    let content = sanitizeContent(article.content);
-
-    if (
-      config.ignoredLinks.some((link) => article.url.includes(link))
-    ) {
-      console.log("⚠️ Article skipped: Matched ignored link");
-      continue;
+  while (endCursor < config.maxArticleCount) {
+    if (endCursor !== 0) {
+      console.log("💤 Sleeping for 1 minute");
+      await sleep(60_000);
+      console.log("🌅 Woke up from sleep");
     }
 
-    if (article.labels?.length) {
-      if (config.addLabelsInContent) {
-        const labels = article.labels.map((label) => label.name);
-        content = `<b>Labels: ${labels.join(", ")}</b>` + content;
-      }
-    }
+    const articlesToFetch = (config.maxArticleCount - endCursor > batchSize)
+      ? batchSize
+      : config.maxArticleCount - endCursor;
 
-    if (config.addArticleLinkInContent) {
-      content = `<a href="${article.url}">Link to Article</a><br><br>` + content;
-    }
-
-    chapters.push({
-      title: article.title,
-      author: article.author ?? "",
-      content: content,
-      filename: article.slug,
+    console.log(`〰️Fetching ${articlesToFetch} articles`);
+    const articles = await omnivore.items.search({
+      first: articlesToFetch,
+      includeContent: true,
+      format: "html",
+      query: `${config.searchQuery} ${ignoredLabelsQuery}`,
+      after: endCursor,
     });
+    console.log("🤖 done");
+    endCursor = Number(articles.pageInfo.endCursor);
 
-    console.log(`✅ done`);
+    for (const edge of articles.edges) {
+      const article = edge.node;
+      console.log(`🌐 Processing ${article.title}`);
+      let content = sanitizeContent(article.content);
+
+      if (
+        config.ignoredLinks.some((link) => article.url.includes(link))
+      ) {
+        console.log("⚠️ Article skipped: Matched ignored link");
+        totalSkipped += 1;
+        continue;
+      }
+
+      if (article.labels?.length) {
+        if (config.addLabelsInContent) {
+          const labels = article.labels.map((label) => label.name);
+          content = `<b>Labels: ${labels.join(", ")}</b>` + content;
+        }
+      }
+
+      if (config.addArticleLinkInContent) {
+        content = `<a href="${article.url}">Link to Article</a><br><br>` + content;
+      }
+
+      chapters.push({
+        title: article.title,
+        author: article.author ?? "",
+        content: content,
+        filename: article.slug,
+      });
+
+      console.log(`✅ done`);
+    }
+
+    totalProcessed += articles.edges.length;
+    libraryTotal = Number(articles.pageInfo.totalCount);
+    if (!articles.pageInfo.hasNextPage) break;
   }
 
-  console.log(`🤖 Processed ${articles.edges.length} articles out of ${articles.pageInfo.totalCount} in your library`);
-  console.log(`🤖 ${articles.edges.length - chapters.length} skipped`);
+  console.log(`🤖 Processed ${totalProcessed} articles out of ${libraryTotal} in your library`);
+  console.log(`🤖 ${totalSkipped} skipped`);
   console.log(`📚 Creating ebook (${config.outputFileName})`);
 
   const fileBuffer = await epub.default(
