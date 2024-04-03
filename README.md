@@ -1,12 +1,36 @@
 # Omnivore EPUB
 
-A program to generate epub files from your [Omnivore](https://omnivore.app) articles
+<!-- Badges start -->
 
-It can also optionally send the ebook to your eReader using email
+[![GitHub Repo stars](https://img.shields.io/github/stars/agrmohit/omnivore-epub)](https://github.com/agrmohit/omnivore-epub)
+[![Gitea Stars](https://img.shields.io/gitea/stars/agrmohit/omnivore-epub?gitea_url=https%3A%2F%2Fcodeberg.org&logo=codeberg)](https://codeberg.org/agrmohit/omnivore-epub)
+[![GitHub Release](https://img.shields.io/github/v/release/agrmohit/omnivore-epub)](https://github.com/agrmohit/omnivore-epub/releases)
+[![License](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/agrmohit/omnivore-epub)
+[![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
-It uses [Omnivore API Client Library for Node.js](https://github.com/omnivore-app/omnivore-api)
+<!-- Badges end -->
+
+A program to generate epub file from articles saved in your [Omnivore](https://omnivore.app) library and optionally send
+it to your eReader using email.
+
+Omnivore is an open source read-it-later app similar to Pocket and Instapaper.
 
 Forked from [here](https://gist.github.com/kebot/90de9c41742cacf371368d85870c4a75)
+
+## OS Support
+
+This program uses no OS specific code and should work on all platforms supported by `Deno`.
+
+## Download
+
+- To download the latest version of the program, you can use git to clone the repository
+- If you are not familiar with git, you can always download the latest version by going to
+  [the latest GitHub release](https://github.com/agrmohit/omnivore-epub/releases/latest)
+- Then, under `Assets` click on `Source code (zip)` which will download the latest release of the program in a zip file
+  which you will need to unzip.
+- The program checks for updates when run and will notify you of new releases when available. This can be disabled in
+  the config file.
 
 ## Usage
 
