@@ -36,7 +36,7 @@ async function checkForUpdates() {
 
     if (config.showReleaseNotes) {
       console.log("ℹ  Release Notes:");
-      console.log(latestRelease.body + "\n");
+      console.log(latestRelease.body);
     }
     console.log("🌐 View on Web: https://github.com/agrmohit/omnivore-epub/releases/latest");
   }
