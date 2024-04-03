@@ -6,27 +6,26 @@
 # This workflow will install Deno then run `deno lint` and `deno test`.
 # For more information see: https://github.com/denoland/setup-deno
 
-name: Deno
+name: deno
 
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
-  workflow_dispatch:
+      - main
 
 permissions:
   contents: read
 
 jobs:
-  verify-formatting-and-lint:
+  deno:
     runs-on: ubuntu-latest
 
     steps:
       - name: Setup repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
