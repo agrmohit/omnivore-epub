@@ -5,7 +5,8 @@
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "markdownlint.config": {
-    "MD024": false
+    "MD024": false,
+    "MD033": false
   },
   "markdownlint.ignore": [".github/**"]
 }

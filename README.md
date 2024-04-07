@@ -42,7 +42,7 @@ This program uses no OS specific code and should work on all platforms supported
 - In your terminal, go to the app folder and run the following command `deno run -A main.ts`
 - The ebook with extension `.epub` should be in the app directory after execution
 
-## Send to eReader like Kindle
+### Send to eReader
 
 List of eReaders that support sending ebook using email:
 
@@ -53,7 +53,7 @@ List of eReaders that support sending ebook using email:
 >
 > Make sure the email address used is approved to send ebook to your eReader
 
-### Configuring email
+#### Configuring email
 
 - Ability to send ebook over email is disabled by default
 - To enable it, set `emailSupport` to `true` in the [config file](config.json)
@@ -123,3 +123,13 @@ articles first.
 
 You can also use it to filter by labels. In case the label contain a space, you will need to escape the double-quotes
 using a forward slash `\`. Example: `sort:saved-desc label:\"Send to Kindle\"`
+
+## Star History
+
+<a href="https://star-history.com/#agrmohit/omnivore-epub&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=agrmohit/omnivore-epub&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=agrmohit/omnivore-epub&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=agrmohit/omnivore-epub&type=Date" />
+ </picture>
+</a>
