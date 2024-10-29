@@ -12,8 +12,9 @@
 <!-- Badges end -->
 
 > [!CAUTION]
-> Unfortunately, Omnivore is [shutting down](https://blog.omnivore.app/p/omnivore-is-joining-elevenlabs) and all data will be deleted on 15th November 2024. Please export your data by then.
-> Omnivore will remain open-source and can still be self-hosted. This progam should continue to work with self-hosted instances.
+> Unfortunately, Omnivore is [shutting down](https://blog.omnivore.app/p/omnivore-is-joining-elevenlabs) and all data
+> will be deleted on 15th November 2024. Please export your data by then. Omnivore will remain open-source and can still
+> be self-hosted. This progam should continue to work with self-hosted instances.
 >
 > I am not affiliated with the Omnivore project in any way.
 
