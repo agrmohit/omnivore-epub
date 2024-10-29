@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.2] - 2024-10-29
+
+### Added
+
+- Note about Omnivore official hosted instance shutting down with deletion of user data on 15th November 2024
+
 ## [0.6.1] - 2024-04-03
 
 ### Added
@@ -62,6 +68,7 @@
 - Add new option for search-string specifier which can also be used to change the article fetch order to oldest article
   first from the current default of newest article first (by [**@zsoltika**](https://github.com/zsoltika))
 
+[0.6.2]: https://github.com/agrmohit/omnivore-epub/releases/tag/v0.6.2
 [0.6.1]: https://github.com/agrmohit/omnivore-epub/releases/tag/v0.6.1
 [0.6.0]: https://github.com/agrmohit/omnivore-epub/releases/tag/v0.6.0
 [0.5.0]: https://github.com/agrmohit/omnivore-epub/releases/tag/v0.5.0
