@@ -16,6 +16,10 @@
 > will be deleted on 15th November 2024. Please export your data by then. Omnivore will remain open-source and can still
 > be self-hosted. This program should continue to work with self-hosted instances.
 >
+> For people looking to migrate, personally I would recommend [Readeck](https://readeck.org/en/) which is a great FOSS
+> alternative though it is missing a few features. [Readwise Reader](https://readwise.io/read) is another good one but
+> its paid and not open source.
+>
 > I am not affiliated with the Omnivore project in any way.
 
 A program to generate epub file from articles saved in your [Omnivore](https://omnivore.app) library and optionally send
