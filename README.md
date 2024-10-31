@@ -18,7 +18,7 @@
 >
 > For people looking to migrate, personally I would recommend [Readeck](https://readeck.org/en/) which is a great FOSS
 > alternative though it is missing a few features. [Readwise Reader](https://readwise.io/read) is another good one but
-> its paid and not open source.
+> its paid and not open source. Both offer ways to import Omnivore data.
 >
 > I am not affiliated with the Omnivore project in any way.
 
